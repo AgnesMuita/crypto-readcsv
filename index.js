@@ -7,7 +7,7 @@ const totals = {};
 //obtain exchange rates 
 global.fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const cc = require('cryptocompare');
-const { notStrictEqual } = require("assert");
+const { notStrictEqual, match } = require("assert");
 const { showCompletionScript, array } = require("yargs");
 const { time } = require("console");
 cc.setApiKey('10c5bbea1ecc63121cf5c8805e48708350cacd20857351d34892f57747dafa7f')
@@ -48,8 +48,20 @@ function portfolioValueBasedOnDateAndToken(item, date, token){
     }else if(matchesDate(item,date) && matchesToken(item, token) && item.transaction_type==="WITHDRAWAL"){
         totals[token] = currentTotal - parseFloat(item.amount)
     }else{
-      //the item does not match a given date 
+      //the item does not match a given date and token
     }
+}
+function portfolioValueBasedOnDate(item, date){
+  const token = item.token
+  const currentTotal = currentTokenTotal(token);
+  if(matchesDate(item,date) && item.transaction_type ==='DEPOSIT'){
+    totals[token] = currentTotal + parseFloat(item.amount)
+  }else if(matchesDate(item,date) && item.transaction_type ==='WITHDRAWAL'){
+    totals[token] = currentTotal - parseFloat(item.amount)
+  }
+  else{
+    //item does not match given date
+  }
 }
 
 
@@ -63,7 +75,7 @@ function portfolioValueBasedOnDateAndToken(item, date, token){
         portfolioValueBasedOnDateAndToken(item, date,token)
       }else if(date){
         //calculate totals based on given date
-
+        portfolioValueBasedOnDate(item, date)
       }else if(token){
         //calculate totals based on token only 
 

@@ -2,13 +2,16 @@
   "name": "crypto-readcsv",
   "version": "1.0.0",
   "description": "",
-  "main": "./bin/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "csv-parser": "^3.0.0"
+    "cryptocompare": "^1.0.0",
+    "csv-parser": "^3.0.0",
+    "node-fetch": "^3.2.4",
+    "yargs": "^17.5.0"
   }
 }

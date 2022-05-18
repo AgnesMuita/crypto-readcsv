@@ -51,18 +51,32 @@ function portfolioValueBasedOnDateAndToken(item, date, token){
       //the item does not match a given date and token
     }
 }
+
 function portfolioValueBasedOnDate(item, date){
-  const token = item.token
-  const currentTotal = currentTokenTotal(token);
-  if(matchesDate(item,date) && item.transaction_type ==='DEPOSIT'){
-    totals[token] = currentTotal + parseFloat(item.amount)
-  }else if(matchesDate(item,date) && item.transaction_type ==='WITHDRAWAL'){
-    totals[token] = currentTotal - parseFloat(item.amount)
-  }
-  else{
-    //item does not match given date
-  }
+    const token = item.token
+    const currentTotal = currentTokenTotal(token);
+    if(matchesDate(item,date) && item.transaction_type ==='DEPOSIT'){
+      totals[token] = currentTotal + parseFloat(item.amount)
+    }else if(matchesDate(item,date) && item.transaction_type ==='WITHDRAWAL'){
+      totals[token] = currentTotal - parseFloat(item.amount)
+    }
+    else{
+      //item does not match given date
+    }
 }
+
+function portfolioValueBasedOnToken(item, token){
+    const currentTotal = currentTokenTotal(token)
+    if(matchesToken(item,token) && item.transaction_type ==='DEPOSIT'){
+      totals[token] = currentTotal + parseFloat(item.amount)
+    }else if(matchesToken(item,token) && item.transaction_type ==='WITHDRAWAL'){
+      totals[token] = currentTotal - parseFloat(item.amount)
+    }
+    else{
+      //item does not match given token
+    }
+}
+
 
 
 
@@ -78,7 +92,7 @@ function portfolioValueBasedOnDate(item, date){
         portfolioValueBasedOnDate(item, date)
       }else if(token){
         //calculate totals based on token only 
-
+        portfolioValueBasedOnToken(item,token)
       }else {
         //calculate totals without parameters
 

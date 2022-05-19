@@ -2,7 +2,7 @@
 #### A command line program to return  latest portfolio values for different tokens and portfolio values given the date.
 #### By **Agnes Muita**
 ## Description
-This program queries values for tokens when issued with arguments and without. 
+This program queries values for different tokens when issued with parameters and without parameters. 
 These values are fetched dynamically to ensure system maintainability in the event that more tokens are added.
 To obtain the latest portfolio value for each token, the function **matchesToken** gets the item that matches the token, and calculates the total against a currentTotal 
 value.

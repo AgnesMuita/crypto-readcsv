@@ -27,9 +27,9 @@ Run:
 | Input            | Behaviour                         | Example Output                        |
 | ------------------- | ----------------------------- | ----------------------------- |
 | node index.js | returns latest portfolio values for each token | {BTC: 1200425.1521679235,ETH: 901704.2831248266,XRP: 903332.9813728357} |
-| node index.js token=ETH  |returns latest portfolio value given token as parameter | {ETH: 901704.2831248266} |
-| node index.js token=ETH date=YYYY-MM-DD |returns latest portfolio value given token and date as parameters | {ETH: 901704.2831248266} |
-| node index.js date=YYYY-MM-DD| returns latest portfolio value given date as parameter| {BTC: 1200425.1521679235,ETH: 901704.2831248266,XRP: 903332.9813728357}|
+| node index.js --token=ETH  |returns latest portfolio value given token as parameter | {ETH: 901704.2831248266} |
+| node index.js --token=ETH date=YYYY-MM-DD |returns latest portfolio value given token and date as parameters | {ETH: 901704.2831248266} |
+| node index.js --date=YYYY-MM-DD| returns latest portfolio value given date as parameter| {BTC: 1200425.1521679235,ETH: 901704.2831248266,XRP: 903332.9813728357}|
 
 ## Technologies Used
 Node.js

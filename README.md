@@ -1,5 +1,5 @@
 # crypto-readcsv
-#### A command line program to return  latest portfolio values for different tokens and portfolio values given the date.
+#### A command line program to return  latest portfolio values for different tokens on different dates.
 #### By **Agnes Muita**
 ## Description
 This program queries values for different tokens when issued with parameters and without parameters. 

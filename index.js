@@ -1,8 +1,11 @@
 const csv = require('csv-parser')
 const fs = require('fs')
 const start = Date.now()
-const yargs = require("yargs")
+const args = require("yargs")(process.argv.slice(2)).argv;
 const totals = {};
+const moment = require('moment');
+const allTokens = [];
+let eachtoken;
 
 //obtain exchange rates 
 global.fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
@@ -11,22 +14,26 @@ const { notStrictEqual, match } = require("assert");
 const { showCompletionScript, array } = require("yargs");
 const { time } = require("console");
 cc.setApiKey('10c5bbea1ecc63121cf5c8805e48708350cacd20857351d34892f57747dafa7f')
-cc.priceMulti(['BTC', 'ETH','XRP'], ['USD'])
+cc.coinList()
+.then(coinList=>{
+    let coinData = (coinList.Data)
+    for(var t in coinData){
+      eachtoken = t  
+    }
+    function matchesCrypto(token){
+        eachtoken = token
+        cc.priceMulti([eachtoken], ['USD'])  
         .then(prices => {
-        //BTC price
-        for (var property in prices.BTC){
-          BTCvalue = prices.BTC[property]
-        }
-        //ETH price
-        for (var property in prices.ETH){
-          ETHvalue = prices.ETH[property]
-        }
-        //XRP price
-        for (var property in prices.XRP){
-          XRPvalue = prices.XRP[property]
-        }
+              for (var property in prices.eachtoken){
+                tokenPrice = prices.eachtoken[property]
+                console.log(tokenPrice)
+              }
         })
-        .catch(console.error);
+    .catch(console.error);
+    }
+    matchesCrypto('ETH')
+})
+.catch(console.error)
 
 
 
@@ -41,6 +48,8 @@ function currentTokenTotal(token){
     }
     return totals[token]
 }
+
+
 function portfolioValueBasedOnDateAndToken(item, date, token){
     const currentTotal = currentTokenTotal(token);
     if(matchesDate(item,date) && matchesToken(item, token) && item.transaction_type==="DEPOSIT"){
@@ -76,26 +85,30 @@ function portfolioValueBasedOnToken(item, token){
       //item does not match given token
     }
 }
-
-
-
+function portfolioValueWithoutParameters(item) {
+    const token = item.token
+    const currentTotal = currentTokenTotal(token)
+    if (item.transaction_type === 'DEPOSIT') {
+        totals[token] = currentTotal + parseFloat(item.amount)
+    } else if (item.transaction_type === 'WITHDRAWAL') {
+        totals[token] = currentTotal - parseFloat(item.amount)
+    } else {
+        // The item does not match known ts type
+    }
+}
 
 //read csv file data
     fs.createReadStream('transactions.csv', {})
     .pipe(csv())
     .on('data', item => {
          if(date && token){
-        //calculate totals based on a given date & token
         portfolioValueBasedOnDateAndToken(item, date,token)
       }else if(date){
-        //calculate totals based on given date
         portfolioValueBasedOnDate(item, date)
       }else if(token){
-        //calculate totals based on token only 
         portfolioValueBasedOnToken(item,token)
       }else {
-        //calculate totals without parameters
-
+        portfolioValueWithoutParameters(item)
       }
      
     })
@@ -103,7 +116,7 @@ function portfolioValueBasedOnToken(item, token){
         console.log(err)
     })
     .on('end', () => {
-        console.log(totals)
+        console.log(totals[token])
         const now = Date.now()
         const tat = now - start
         console.log(`${tat / 1000} seconds`)

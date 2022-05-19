@@ -14,32 +14,12 @@ const { notStrictEqual, match } = require("assert");
 const { showCompletionScript, array } = require("yargs");
 const { time } = require("console");
 cc.setApiKey('10c5bbea1ecc63121cf5c8805e48708350cacd20857351d34892f57747dafa7f')
-cc.coinList()
-.then(coinList=>{
-    let coinData = (coinList.Data)
-    for(var t in coinData){
-      eachtoken = t  
-    }
-    function matchesCrypto(token){
-        eachtoken = token
-        cc.priceMulti([eachtoken], ['USD'])  
-        .then(prices => {
-              for (var property in prices.eachtoken){
-                tokenPrice = prices.eachtoken[property]
-                console.log(tokenPrice)
-              }
-        })
-    .catch(console.error);
-    }
-    matchesCrypto('ETH')
-})
-.catch(console.error)
-
 
 
 //read this from args
 const date = args.date
 const token = args.token 
+
 
 function currentTokenTotal(token){
     //Ensure we have token total in the totals array  
@@ -101,7 +81,7 @@ function portfolioValueWithoutParameters(item) {
     fs.createReadStream('transactions.csv', {})
     .pipe(csv())
     .on('data', item => {
-        if(date && token){
+      if(date && token){
         portfolioValueBasedOnDateAndToken(item, date,token)
       }else if(date){
         portfolioValueBasedOnDate(item, date)
@@ -133,5 +113,20 @@ function matchesDate(item,date){
 function matchesToken(item, token){
   return item.token === token;
 }
+
+// function matchesCrypto(){
+//   if (matchesToken(item, token)){
+//     console.log(token)
+//      cc.priceMulti([token], ['USD'])  
+//     .then(prices => {
+//         for (var property in prices.token){
+//           tokenPrice = prices.token[property]
+//           console.log(tokenPrice)
+//         }
+//         })
+//     .catch(console.error);
+//   }
+// }
+//   matchesCrypto();
 
 

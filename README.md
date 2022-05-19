@@ -1,6 +1,4 @@
 # crypto-readcsv
-By Agnes Muita
-# Akan Birthdays Selection Application 
 #### A command line program to return  latest portfolio values for different tokens and portfolio values given the date.
 #### By **Agnes Muita**
 ## Description

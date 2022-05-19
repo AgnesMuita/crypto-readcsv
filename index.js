@@ -101,7 +101,7 @@ function portfolioValueWithoutParameters(item) {
     fs.createReadStream('transactions.csv', {})
     .pipe(csv())
     .on('data', item => {
-         if(date && token){
+        if(date && token){
         portfolioValueBasedOnDateAndToken(item, date,token)
       }else if(date){
         portfolioValueBasedOnDate(item, date)
@@ -116,7 +116,7 @@ function portfolioValueWithoutParameters(item) {
         console.log(err)
     })
     .on('end', () => {
-        console.log(totals[token])
+        console.log(totals)
         const now = Date.now()
         const tat = now - start
         console.log(`${tat / 1000} seconds`)

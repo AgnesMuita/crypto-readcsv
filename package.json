@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "cryptocompare": "^1.0.0",
+    "csv-parse": "^5.0.4",
     "csv-parser": "^3.0.0",
     "moment": "^2.29.3",
     "node-fetch": "^3.2.4",

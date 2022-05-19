@@ -11,9 +11,16 @@ To obtain the latest portfolio value without parameters,total calculations are d
 
 ## Setup/Installation Requirements
 Clone the repo
+
+
 Add transactions.csv to the root directory
+
+
 Run: 
+
 **npm install**
+
+
 **node index.js**
 
 ## Behavior Driven Development

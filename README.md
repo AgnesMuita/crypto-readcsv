@@ -4,10 +4,12 @@
 ## Description
 This program queries values for different tokens when issued with parameters and without parameters. 
 These values are fetched dynamically to ensure system maintainability in the event that more tokens are added.
+
 To obtain the latest portfolio value for each token, the function **matchesToken** obtains transactions matching the token, and calculates the latest portfolio values total against a currentTotal value.
-To obtain the latest portfolio value for tokens based on date, the function **matchesDate** returns the portfolio value totals for that date for all tokens. 
+To obtain the latest portfolio value for tokens based on date, the function **matchesDate** returns the portfolio value totals on that date for all tokens. 
 To obtain the latest portfolio value based on date and token, the functions **matchesToken** and **matchesDate** return the matching token and calculates the total portfolio values for that date against the currentTotal value.
 To obtain the latest portfolio value without parameters,total calculations are done for all tokens in the file.
+All the portfolio values are calculated based on the token's exchange rate in USD obtained from Cryptocompare. 
 
 ## Setup/Installation Requirements
 Clone the repo

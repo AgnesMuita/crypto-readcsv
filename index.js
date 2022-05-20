@@ -4,22 +4,37 @@ const start = Date.now()
 const args = require("yargs")(process.argv.slice(2)).argv;
 const totals = {};
 const moment = require('moment');
-const allTokens = [];
+let tokenPrice;
 let eachtoken;
-
-//obtain exchange rates 
-global.fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-const cc = require('cryptocompare');
-const { notStrictEqual, match } = require("assert");
-const { showCompletionScript, array } = require("yargs");
-const { time } = require("console");
-cc.setApiKey('10c5bbea1ecc63121cf5c8805e48708350cacd20857351d34892f57747dafa7f')
 
 
 //read this from args
 const date = args.date
 const token = args.token 
 
+//obtain exchange rates 
+global.fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const cc = require('cryptocompare');
+cc.setApiKey('10c5bbea1ecc63121cf5c8805e48708350cacd20857351d34892f57747dafa7f')
+// if(token){
+//   cc.priceMulti([token], ['USD'])  
+//     .then(prices => {
+//         for (var property in prices[token]){
+//           tokenPrice = prices[token][property]
+//         }
+//         })
+//     .catch(console.error);
+// }
+// else{
+//     cc.priceMulti([eachtoken], ['USD'])  
+//     .then(prices => {
+//         for (var property in prices[eachtoken]){
+//           tokenPrice1 = prices[eachtoken][property]
+//           console.log(tokenPrice1)
+//         }
+//         })
+//     .catch(console.error);
+// }
 
 function currentTokenTotal(token){
     //Ensure we have token total in the totals array  
@@ -28,7 +43,6 @@ function currentTokenTotal(token){
     }
     return totals[token]
 }
-
 
 function portfolioValueBasedOnDateAndToken(item, date, token){
     const currentTotal = currentTokenTotal(token);
@@ -40,10 +54,9 @@ function portfolioValueBasedOnDateAndToken(item, date, token){
       //the item does not match a given date and token
     }
 }
-
 function portfolioValueBasedOnDate(item, date){
-    const token = item.token
-    const currentTotal = currentTokenTotal(token);
+    const eachtoken = item.token
+    const currentTotal = currentTokenTotal(eachtoken);
     if(matchesDate(item,date) && item.transaction_type ==='DEPOSIT'){
       totals[token] = currentTotal + parseFloat(item.amount)
     }else if(matchesDate(item,date) && item.transaction_type ==='WITHDRAWAL'){
@@ -53,7 +66,6 @@ function portfolioValueBasedOnDate(item, date){
       //item does not match given date
     }
 }
-
 function portfolioValueBasedOnToken(item, token){
     const currentTotal = currentTokenTotal(token)
     if(matchesToken(item,token) && item.transaction_type ==='DEPOSIT'){
@@ -78,55 +90,41 @@ function portfolioValueWithoutParameters(item) {
 }
 
 //read csv file data
-    fs.createReadStream('transactions.csv', {})
-    .pipe(csv())
-    .on('data', item => {
-      if(date && token){
-        portfolioValueBasedOnDateAndToken(item, date,token)
-      }else if(date){
-        portfolioValueBasedOnDate(item, date)
-      }else if(token){
-        portfolioValueBasedOnToken(item,token)
-      }else {
-        portfolioValueWithoutParameters(item)
-      }
-     
-    })
-    .on('error', err => {
-        console.log(err)
-    })
-    .on('end', () => {
-        console.log(totals)
-        const now = Date.now()
-        const tat = now - start
-        console.log(`${tat / 1000} seconds`)
-    })
+  fs.createReadStream('transactions.csv', {})
+  .pipe(csv())
+  .on('data', item => {
+    
+    if(date && token){
+      portfolioValueBasedOnDateAndToken(item, date,token)
+    }else if(date){
+      portfolioValueBasedOnDate(item, date)
+    }else if(token){
+      portfolioValueBasedOnToken(item,token)
+    }else {
+      portfolioValueWithoutParameters(item)
+    }
+    
+  })
+  .on('error', err => {
+      console.log(err)
+  })
+  .on('end', () => {
+       console.log(totals)
+      const now = Date.now()
+      const tat = now - start
+      console.log(`${tat / 1000} seconds`)
+  })
 
 
 //match item with date
 function matchesDate(item,date){
-    //convert item date to YYYY-MM-DD string
     const itemDate = moment.unix(item.timestamp).format('YYYY-MM-DD')
     return itemDate === date
 }
+
 //match item with given token
 function matchesToken(item, token){
   return item.token === token;
 }
-
-// function matchesCrypto(){
-//   if (matchesToken(item, token)){
-//     console.log(token)
-//      cc.priceMulti([token], ['USD'])  
-//     .then(prices => {
-//         for (var property in prices.token){
-//           tokenPrice = prices.token[property]
-//           console.log(tokenPrice)
-//         }
-//         })
-//     .catch(console.error);
-//   }
-// }
-//   matchesCrypto();
 
 

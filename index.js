@@ -12,29 +12,6 @@ let eachtoken;
 const date = args.date
 const token = args.token 
 
-//obtain exchange rates 
-global.fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-const cc = require('cryptocompare');
-cc.setApiKey('10c5bbea1ecc63121cf5c8805e48708350cacd20857351d34892f57747dafa7f')
-// if(token){
-//   cc.priceMulti([token], ['USD'])  
-//     .then(prices => {
-//         for (var property in prices[token]){
-//           tokenPrice = prices[token][property]
-//         }
-//         })
-//     .catch(console.error);
-// }
-// else{
-//     cc.priceMulti([eachtoken], ['USD'])  
-//     .then(prices => {
-//         for (var property in prices[eachtoken]){
-//           tokenPrice1 = prices[eachtoken][property]
-//           console.log(tokenPrice1)
-//         }
-//         })
-//     .catch(console.error);
-// }
 
 function currentTokenTotal(token){
     //Ensure we have token total in the totals array  
@@ -126,5 +103,6 @@ function matchesDate(item,date){
 function matchesToken(item, token){
   return item.token === token;
 }
+
 
 
